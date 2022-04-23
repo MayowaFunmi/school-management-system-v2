@@ -1,0 +1,30 @@
+{% extends 'auths/reg_base.html' %}
+{% load static %}
+
+{% block title %}Education | Signup Success Page{% endblock title %}
+
+{% block reg_content %}
+    <section class="sign-in">
+        <div>
+            <h3>
+                Thank You, {{ first_name }} {{ last_name }}.<br>
+                You Have Successfully Registered. Below Are Your Registration Details:
+            </h3>
+        </div>
+        <div>
+            <h2>Username: {{ username }}</h2>
+            <h2>Email: {{ email }}</h2>
+            <h2>First Name: {{ first_name }}</h2>
+            <h2>Surname: {{ last_name }}</h2>
+            <h2>User Status: {{ status }}</h2>
+            <h2>File Number: {{ file_no }}</h2>
+            <h2>Unique ID: {{ unique_id }}</h2>
+        </div>
+        <p>Already Registerd?</p>
+        <div class="form-group form-button">
+            <button class="btn btn-round btn-primary">
+                <a href="{% url 'auths:login' %}" class="signup-image-link">Login</a>
+            </button>
+        </div>
+    </section>
+{% endblock reg_content %}

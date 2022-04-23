@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta content="width=device-width, initial-scale=1" name="viewport" />
+	<meta name="description" content="Responsive Admin Template" />
+	<meta name="author" content="RedstarHospital" />
+	<title>{% block title %}{% endblock title %}</title>
+	<!-- google font -->
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+	<!-- icons -->
+	<link rel="stylesheet" href="{% static 'css/material-design-iconic-font.min.css' %}">
+	<!-- bootstrap -->
+	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+	<!-- Theme Styles -->
+	<link href="{% static 'css/theme-style.css' %}" rel="stylesheet" id="rt_style_components" type="text/css" />
+    <link href="{% static 'css/formlayout.css' %}" rel="stylesheet" type="text/css" />
+	<!-- style -->
+	<link rel="stylesheet" href="{% static 'css/page-login.css' %}">
+	<!-- favicon -->
+	<link rel="shortcut icon" href="{% static 'img/favicon.ico' %}" />
+</head>
+<body>
+    <div class="main">
+		<!-- Sign up form -->
+        {% block reg_content %}
+		
+        {% endblock reg_content %}
+	</div>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/togglePassword.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+</body>
+</html>
