@@ -196,20 +196,38 @@ def create_teacher_profile(request):
 
         images = request.FILES.getlist('documents')
         document_title = request.POST.getlist('document_title[]')
-        print(document_title, type(document_title))
+        # print(document_title, type(document_title))
         file_list = []
         for image in images:
             fs = FileSystemStorage()
             file_path = fs.save(image.name, image)
             file_list.append(file_path)
 
-        print(file_list, type(file_list))
+        # print(file_list, type(file_list))
         for key, value in zip(document_title, file_list):
             teacher_files = TeachingSTaffFiles(user=teacher, document_title=key, documents=value)
             teacher_files.save()
         return redirect('/auths/display_teacher_profile/')
 
     return render(request, 'auths/create_teacher_profile.html', context)
+
+
+def add_files(request):
+    teacher = TeachingSTaff.objects.get(user=request.user)
+    images = request.FILES.getlist('documents')
+    document_title = request.POST.getlist('document_title[]')
+    # print(document_title, type(document_title))
+    file_list = []
+    for image in images:
+        fs = FileSystemStorage()
+        file_path = fs.save(image.name, image)
+        file_list.append(file_path)
+
+    # print(file_list, type(file_list))
+    for key, value in zip(document_title, file_list):
+        teacher_files = TeachingSTaffFiles(user=teacher, document_title=key, documents=value)
+        teacher_files.save()
+    return redirect('/auths/display_teacher_profile/')
 
 
 @login_required
@@ -237,7 +255,7 @@ def display_teacher_profile(request):
             'published_work': teacher.published_work, 'current_posting_zone': teacher.current_posting_zone,
             'current_posting_school': teacher.current_posting_school, 'previous_posting_1': teacher.previous_posting_1,
             'previous_posting_2': teacher.previous_posting_2, 'previous_posting_3': teacher.previous_posting_3,
-            'current_subject': teacher.current_subject, 'other_subject': teacher.other_subject,
+            'current_subject': teacher.current_subject, 'other_subject': teacher.other_subject, 'teacher_file': teacher_file
         }
         return render(request, 'auths/display_teacher_profile.html', context)
     # after display profile. create a link to go to dsahboard
@@ -294,10 +312,13 @@ def update_teacher_profile(request):
     teacher = TeachingSTaff.objects.get(user=request.user)
     all_zones = Zone.objects.all()
     all_schools = School.objects.order_by('zone')
+    all_subjects = Subject.objects.order_by('name')
+
     context = {
         'teacher': teacher,
         'all_zones': all_zones,
-        'all_schools': all_schools
+        'all_schools': all_schools,
+        'all_subjects': all_subjects
     }
 
     if request.method == 'POST':
@@ -325,11 +346,11 @@ def update_teacher_profile(request):
         # current_posting_school_id = request.POST['current_posting_school']
 
         published_work = request.POST['published_work']
-        current_subject = request.POST['current_subject']
+        current_subject_id = request.POST['current_subject']
         previous_posting_1_id = request.POST['previous_posting_1']
         previous_posting_2_id = request.POST['previous_posting_2']
         previous_posting_3_id = request.POST['previous_posting_3']
-        previous_subjects = request.POST['previous_subjects']
+        other_subject_id = request.POST['other_subject']
 
         if previous_posting_1_id == 'Not Available':
             previous_posting_1 = None
@@ -345,6 +366,16 @@ def update_teacher_profile(request):
             previous_posting_3 = None
         else:
             previous_posting_3 = School.objects.get(id=previous_posting_3_id)
+
+        if current_subject_id == 'Not Available':
+            current_subject = teacher.current_subject
+        else:
+            current_subject = Subject.objects.get(id=current_subject_id)
+
+        if other_subject_id == 'Not Available':
+            other_subject = teacher.other_subject
+        else:
+            other_subject = Subject.objects.get(id=other_subject_id)
 
         y = teacher.picture
         picture = None
@@ -415,7 +446,7 @@ def update_teacher_profile(request):
         teacher.previous_posting_2 = previous_posting_2
         teacher.previous_posting_3 = previous_posting_3
         teacher.current_subject = current_subject
-        teacher.previous_subjects = previous_subjects
+        teacher.other_subject = other_subject
         teacher.save()
         return redirect('/auths/display_teacher_profile/')
     return render(request, 'auths/update_teacher_profile.html', context)

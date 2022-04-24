@@ -9,6 +9,7 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('create_teacher_profile/', views.create_teacher_profile, name='create_teacher_profile'),
     path('update_teacher_profile/', views.update_teacher_profile, name='update_teacher_profile'),
+    path('add_files/', views.add_files, name='add_files'),
     path('display_teacher_profile/', views.display_teacher_profile, name='display_teacher_profile'),
     path('teacher_docs/', views.teacher_docs, name='teacher_docs'),
     path('create_non_teacher_profile/', n_teaching.create_non_teacher_profile, name='create_non_teacher_profile'),

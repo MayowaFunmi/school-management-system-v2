@@ -1,7 +1,7 @@
 {% extends 'auths/reg_base.html' %}
 {% load static %}
 
-{% block title %}Education | Teachers' Profile Form{% endblock title %}
+{% block title %}Education | Teachers' Profile Update Form{% endblock title %}
 
 {% block reg_content %}
     <section class="signup">
@@ -15,12 +15,13 @@
         <div class="container">
             <div class="signup-content">
                 <div class="signup-form">
-                    <h2 class="form-title">Create Teacher's Profile Form</h2>
+                    <h2 class="form-title">Update Teacher's Profile Form</h2>
                     <form method="POST" class="register-form" id="register-form" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group">
                             <label>Select A Title:</label>
                             <select class="form-select" name="title" required>
+                                <option value="{{ teacher.title }}" selected>{{ teacher.title }}</option>
                                 <option value="Mr">Mr</option>
                                 <option value="Mrs">Mrs</option>
                                 <option value="Dr">Dr</option>
@@ -29,35 +30,38 @@
                         </div>
                         <div class="form-group">
                             <div class="">
-                                <input name="middle_name" type="text" placeholder="Your Middle Name" class="form-control input-height" required />
+                                <input name="middle_name" type="text" value="{{ teacher.middle_name }}" class="form-control input-height" required />
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Gender:</label>
                             <select class="form-select" name="gender" required>
+                                <option value="{{ teacher.gender }}" selected>{{ teacher.gender }}</option>
                                 <option value="Male">Male</option>
 							    <option value="Female">Female</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Date Of Birth:</label>
+                            <label>Current Date Of Birth: <strong>{{ teacher.date_of_birth|date:'d/m/Y' }}</strong></label><br>
+                            <label>Change Date Of Birth If Necessary:</label>
                             <div class="">
-                                <input name="date_of_birth" id="date_of_birth" type="date" class="form-control input-height" />
+                                <input name="date_of_birth" id="update_date_of_birth" type="date" class="form-control input-height" />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="">
-                                <input name="age" type="text" id="age" placeholder="Age automatic display" class="form-control input-height" readonly />
+                                <input name="age" type="text" id="update_age" value="{{ teacher.age }}" class="form-control input-height" readonly />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="">
-                                <input name="address" type="text" placeholder="Your Home Address" class="form-control input-height" required />
+                                <input name="address" type="text" value="{{ teacher.address }}" class="form-control input-height" required />
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Religion:</label>
                             <select class="form-select" name="religion" required>
+                                <option value="{{ teacher.religion }}" selected>{{ teacher.religion }}</option>
                                 <option value="Christianity">Christianity</option>
 							    <option value="Islam">Islam</option>
                                 <option value="Others">Others</option>
@@ -65,23 +69,27 @@
                         </div>
                         <div class="form-group">
                             <div class="">
-                                <input name="phone_number" type="text" placeholder="Your Phone Number" class="form-control input-height" required />
+                                <input name="phone_number" id="phone_number" type="text" value="{{ teacher.phone_number }}" class="form-control input-height" required />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Add Your Photo:</label>
+                            <label>Current Photo:</label>
+                            <img src="{{ teacher.picture.url }}" style="width: 150px; height: 150px;"><br>
+                            
+                            <label>Change Photo If Necessary:</label>
                             <div class="">
-                                <input name="picture" id="picture" type="file" class="form-control input-height" required />
+                                <input name="picture" id="picture" type="file" class="form-control input-height" />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="">
-                                <textarea name="about_me" rows="10" cols="40" placeholder="Write something about yourself ..." class="form-control"></textarea>
+                                <textarea name="about_me" rows="10" cols="40" class="form-control">{{ teacher.about_me }}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Your Designation:</label>
                             <select class="form-select" name="designation" required>
+                                <option value="{{ teacher.designation }}" selected>{{ teacher.designation }}</option>
                                 <option value="Principal">Principal</option>
                                 <option value="Vice Principal">Vice Principal</option>
                                 <option value="Head of Department">Head of Department</option>
@@ -90,23 +98,26 @@
                         </div>
                         <div class="form-group">
                             <div class="">
-                                <input name="grade_level" type="text" placeholder="Your Grade Level" class="form-control input-height" required />
+                                <input name="grade_level" type="text" value="{{ teacher.grade_level }}" class="form-control input-height" required />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Date Of First Appointment:</label>
+                            <label>Current Date Of First Appointment: <strong>{{ teacher.first_appointment|date:'d/m/Y' }}</strong></label><br>
+                            
+                            <label> Change Date If Necessary:</label>
                             <div class="">
-                                <input name="first_appointment" id="first_appointment" type="date" class="form-control input-height" />
+                                <input name="first_appointment" id="update_first_appointment" type="date" class="form-control input-height" />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="">
-                                <input name="years_in_service" id="years_in_service" type="text" placeholder="No of years in service" class="form-control input-height" readonly />
+                                <input name="years_in_service" id="update_years_in_service" type="text" value="{{ teacher.years_in_service }}" class="form-control input-height" readonly />
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Highest Qualification:</label>
                             <select class="form-select" name="qualification" required>
+                                <option value="{{ teacher.qualification }}" selected>{{ teacher.qualification }}</option>
                                 <option value="NCE">NCE</option>
                                 <option value="HND">HND</option>
                                 <option value="B.Sc">B.Sc</option>
@@ -118,40 +129,49 @@
                         </div>
                         <div class="form-group">
                             <div class="">
-                                <input name="discipline" type="text" placeholder="Discipline/Field Of Specialization" class="form-control input-height" required />
+                                <input name="discipline" type="text" value="{{ teacher.discipline }}" id="discipline" class="form-control input-height" required />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Current Zone:</label>
-                            <select class="form-select" name="current_posting_zone" id="current_posting_zone" required>
-                                <option disabled>---------------------------------</option>
+                            <label>Current Zone: <strong>{{ teacher.current_posting_zone }}</strong></label><br>
+                            <label>Choose Another Zone:</label><button id="show_zone">Here</button>
+                            <select class="form-select" style="display: none;" name="current_posting_zone" id="current_posting_zone">
+                                <option value="None">Select Zone</option>
                                 {% for zone in all_zones %}
                                     <option value="{{ zone.id }}">{{ zone.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Current School:</label>
-                            <select class="form-select current_posting_school" name="current_posting_school" required>
+                            <label>Current School: <strong>{{ teacher.current_posting_school }}</strong></label><br>
                             
+                            <label>Choose A New School:</label>
+                            <select style="display: none;" name="current_posting_school" class="form-select current_posting_school">
+                                <option value="None">Select School</option>
+    
                             </select>
                         </div>
                         <div class="form-group">
                             <label>URL link to your published work (if any)</label>
                             <div class="">
-                                <input name="published_work" id="published_work" type="url" placeholder="E.g 'http://www.google.com' or https://" class="form-control input-height" />
+                                <input name="published_work" id="published_work" type="url" value="{{ teacher.published_work }}" class="form-control input-height" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Current Subject:</label>
+                            <label>Current Subject: <strong>{{ teacher.current_subject }}</strong></label><br>
+                            
+                            <label>Change Subject (If Necessary):</label>
                             <select class="form-select" name="current_subject" required>
+                                <option value="Not Available">Ignore If None</option>
                                 {% for subject in all_subjects %}
 							        <option value="{{ subject.id }}">{{ subject.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Previous School Posted 1:</label>
+                            <label>Previous School Posted 1:</label><br>
+                            <label>School 1 Selected: <strong>{{ teacher.previous_posting_1 }}</strong></label><br>
+                            <label>Change Previous School 1</label>
                             <select class="form-select" name="previous_posting_1" required>
                                 <option value="Not Available">Ignore If None</option>
                                 {% for school in all_schools %}
@@ -160,7 +180,10 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Previous School Posted 2:</label>
+                            <label>Previous School Posted 2:</label><br>
+                            <label>School 2 Selected: <strong>{{ teacher.previous_posting_2 }}</strong></label><br>
+                            
+                            <label>Change Previous School 2</label>
                             <select class="form-select" name="previous_posting_2" required>
                                 <option value="Not Available">Ignore If None</option>
                                 {% for school in all_schools %}
@@ -169,7 +192,10 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Previous School Posted 3:</label>
+                            <label>Previous School Posted 3:</label><br>
+                            <label>School 3 Selected: <strong>{{ teacher.previous_posting_3 }}</strong></label><br>
+                            
+                            <label>Change Previous School 3</label>
                             <select class="form-select" name="previous_posting_3" required>
                                 <option value="Not Available">Ignore If None</option>
                                 {% for school in all_schools %}
@@ -179,27 +205,24 @@
                         </div>
                         <div class="form-group">
                             <label>Other Subject You Can Teach:</label>
+                            <input type="text" class="form-control" value="{{ teacher.other_subject }}" required>
+                            
+                            <label>Change Subject (If Necessary):</label>
                             <select class="form-select" name="other_subject" required>
+                                <option value="Not Available">Ignore If None</option>
                                 {% for subject in all_subjects %}
-                                    <option value="{{ subject.id }}">{{ subject.name }}</option>
+							        <option value="{{ subject.id }}">{{ subject.name }}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Upload Document Files*</label><br>
-                            <div id="images">
-    
-                            </div>
-                            <input id="add_image" class="btn btn-info" type="submit" value="Add Documents">
-                        </div>
-                        
                         
                         <div class="form-group form-button">
-                            <button type="submit" class="btn btn-round btn-primary" name="signup" id="register">Create Profile</button>
+                            <button type="submit" class="btn btn-round btn-primary" name="signup" id="register">Update Profile</button>
                         </div>
                     </form>
                 </div>
                 <div class="signup-image">
+                    <a href="{% url 'auths:display_teacher_profile' %}" class="signup-image-link">Back To Your Profile</a>
                     <figure><img src="{% static 'img/signup.jpg' %}" alt="sing up image"></figure><br>
                     <br><br><br>
                     <figure><img src="{% static 'img/signup.jpg' %}" alt="sing up image"></figure><br>

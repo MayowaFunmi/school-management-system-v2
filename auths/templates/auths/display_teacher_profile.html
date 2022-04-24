@@ -52,10 +52,9 @@
 										<!-- END SIDEBAR USER TITLE -->
 										<!-- SIDEBAR BUTTONS -->
 										<div class="profile-userbuttons">
-											<button type="button"
-												class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-primary">Follow</button>
-											<button type="button"
-												class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-pink">Message</button>
+											<button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-primary">Follow</button>
+											<button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-pink">Message</button>
+                                            <a href="{% url 'auths:update_teacher_profile' %}">Edit Profile</a>
 										</div>
 										<!-- END SIDEBAR BUTTONS -->
 									</div>
@@ -69,6 +68,10 @@
 										
 										</div>
 										<ul class="list-group list-group-unbordered">
+                                            <li class="list-group-item">
+												<b>Grade Level </b>
+												<div class="profile-desc-item pull-right">{{ grade_level }}</div>
+											</li>
 											<li class="list-group-item">
 												<b>Gender </b>
 												<div class="profile-desc-item pull-right">{{ gender }}</div>
@@ -85,11 +88,28 @@
 												<b>Degree </b>
 												<div class="profile-desc-item pull-right">{{ qualification }}</div>
 											</li>
-											<li class="list-group-item">
+                                            <li class="list-group-item">
 												<b>Designation</b>
 												<div class="profile-desc-item pull-right">{{ designation }}</div>
 											</li>
+											<li class="list-group-item">
+												<b>Discipline</b>
+												<div class="profile-desc-item pull-right">{{ discipline }}</div>
+											</li>
+                                            <li class="list-group-item">
+												<b>Religion</b>
+												<div class="profile-desc-item pull-right">{{ religion }}</div>
+											</li>
+                                            <li class="list-group-item">
+												<b>Date Of First Appointment</b>
+												<div class="profile-desc-item pull-right">{{ first_appointment }}</div>
+											</li>
+                                            <li class="list-group-item">
+												<b>Years Of Service</b>
+												<div class="profile-desc-item pull-right">{{ years_in_service }}</div>
+											</li>
 										</ul>
+                                        <!--
 										<div class="row list-separated profile-stat">
 											<div class="col-md-4 col-sm-4 col-6">
 												<div class="uppercase profile-stat-title"> 37 </div>
@@ -104,6 +124,7 @@
 												<div class="uppercase profile-stat-text"> Uploads </div>
 											</div>
 										</div>
+                                        -->
 									</div>
 								</div>
 								<div class="card">
@@ -114,6 +135,18 @@
 										<div class="row text-center m-t-10">
 											<div class="col-md-12">
 												<p>{{ address }}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+                                <div class="card">
+									<div class="card-head">
+										<header>Current School Zone</header>
+									</div>
+									<div class="card-body no-padding height-9">
+										<div class="row text-center m-t-10">
+											<div class="col-md-12">
+												<p>{{ current_posting_zone }}</p>
 											</div>
 										</div>
 									</div>
@@ -192,10 +225,8 @@
 											<!-- Nav tabs -->
 											<div class="p-rl-20">
 												<ul class="nav customtab nav-tabs" role="tablist">
-													<li class="nav-item"><a href="#tab1" class="nav-link active"
-															data-bs-toggle="tab">About Me</a></li>
-													<li class="nav-item"><a href="#tab2" class="nav-link"
-															data-bs-toggle="tab">Activity</a></li>
+													<li class="nav-item"><a href="#tab1" class="nav-link active" data-bs-toggle="tab">About Me</a></li>
+													<li class="nav-item"><a href="#tab2" class="nav-link" data-bs-toggle="tab">Activity</a></li>
 												</ul>
 											</div>
 											<!-- Tab panes -->
@@ -223,59 +254,52 @@
 														<hr>
 														<p class="m-t-30">{{ about_me }}</p>
 														<br>
+              
+														<h4 class="font-bold">Current Subject</h4>
+														<hr>
+														<ul>
+															<li>{{ current_subject }}</li>
+														</ul>
+														<br>
+														<h4 class="font-bold">Other Subjects Taught</h4>
+														<hr>
+														<ul>
+															<li>{{ other_subject }}</li>
+														</ul>
+														<br>
+														<h4 class="font-bold">Published Work(s)</h4>
+														<hr>
+														<ul>
+															<li><a href="{{ published_work }}" target="_blank">Link to my published work</a></li>
+														</ul>
+														<br>
                                                         
-                                                        <!--
-														<h4 class="font-bold">Education</h4>
+                                                        <h4 class="font-bold">Uploaded Files</h4>
 														<hr>
-														<ul>
-															<li>B.A.,Gujarat University, Ahmedabad,India.</li>
-															<li>M.A.,Gujarat University, Ahmedabad, India.</li>
-															<li>P.H.D., Shaurashtra University, Rajkot</li>
-														</ul>
+														<ol>
+                                                            {% for file in teacher_file %}
+															<li>{{ file.document_title }}</li> {{ file.documents }}
+                                                            {% endfor %}
+														</ol>
 														<br>
-														<h4 class="font-bold">Experience</h4>
-														<hr>
-														<ul>
-															<li>One year experience as Jr. Professor from April-2009 to
-																march-2010 at B. J. Arts College, Ahmedabad.</li>
-															<li>Three year experience as Jr. Professor at V.S. Arts &
-																Commerse Collage from April - 2008 to April -
-																2011.</li>
-															<li>Lorem Ipsum is simply dummy text of the printing and
-																typesetting industry. </li>
-															<li>Lorem Ipsum is simply dummy text of the printing and
-																typesetting industry. </li>
-															<li>Lorem Ipsum is simply dummy text of the printing and
-																typesetting industry. </li>
-															<li>Lorem Ipsum is simply dummy text of the printing and
-																typesetting industry. </li>
-														</ul>
-														<br>
-														<h4 class="font-bold">Conferences, Cources & Workshop Attended
-														</h4>
-														<hr>
-														<ul>
-															<li>Lorem Ipsum is simply dummy text of the printing and
-																typesetting industry. </li>
-															<li>Lorem Ipsum is simply dummy text of the printing and
-																typesetting industry. </li>
-															<li>Lorem Ipsum is simply dummy text of the printing and
-																typesetting industry. </li>
-															<li>Lorem Ipsum is simply dummy text of the printing and
-																typesetting industry. </li>
-															<li>Lorem Ipsum is simply dummy text of the printing and
-																typesetting industry. </li>
-															<li>Lorem Ipsum is simply dummy text of the printing and
-																typesetting industry. </li>
-															<li>Lorem Ipsum is simply dummy text of the printing and
-																typesetting industry. </li>
-														</ul>
-														<br>
-                                                        -->
+                                                        <form method="post" enctype="multipart/form-data" action="/auths/add_files/">
+                                                            {% csrf_token %}
+                                                            <div class="form-group">
+                                                                <label>Upload More Documents</label><br>
+                                                                <div id="images">
+                                        
+                                                                </div>
+                                                                <input id="add_image" class="btn btn-info" type="submit" value="Add Documents">
+                                                            </div>
+                                                            <div class="form-group form-button">
+                                                                <button type="submit" class="btn btn-round btn-primary" name="signup" id="register">Add Files</button>
+                                                            </div>
+                                                        </form>
+              
 													</div>
 												</div>
             
-            
+                                                <!--- Blog Page / To Do List Start -->
 												<div class="tab-pane" id="tab2">
 													<div class="container-fluid">
 														<div class="row">
@@ -466,6 +490,7 @@
 														</div>
 													</div>
 												</div>
+                                                <!--- Blog Page / To Do List End -->
 											</div>
 										</div>
 									</div>

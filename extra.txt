@@ -1,0 +1,6 @@
+- create a to do list
+- create a follow system
+- direct messaging system
+- notification system
+- chat app
+- data analyses
