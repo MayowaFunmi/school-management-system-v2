@@ -1,0 +1,17 @@
+{% for teacher in data %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ teacher.user.first_name }} {{ teacher.user.last_name }}</td>
+        <td>{{ teacher.user.file_no }}</td>
+        <td>{{ teacher.designation }}</td>
+        <td>{{ teacher.grade_level }}</td>
+        <td>{{ teacher.user.email }}</td>
+        <td>{{ teacher.phone_number }}</td>
+        <td>{{ teacher.age }}</td>
+        <td>
+            <button id="addRow" class="btn btn-info">
+                <a href="{% url 'auths:user_profile' teacher.user.id %}">View</a>
+            </button>
+        </td>
+    </tr>
+{% endfor %}

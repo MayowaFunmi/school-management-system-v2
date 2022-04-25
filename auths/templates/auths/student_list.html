@@ -1,0 +1,101 @@
+{% extends 'auths/base.html' %}
+{% load static %}
+
+{% block title %}Education | Student Dashboard{% endblock title %}
+
+{% block bootstrap_table_css %}
+    <link href="{% static 'css/datatable.bootstrap5.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock bootstrap_table_css %}
+
+{% block page_content %}
+    <!-- start page content -->
+    <div class="page-content-wrapper">
+				<div class="page-content">
+					<div class="page-bar">
+						<div class="page-title-breadcrumb">
+							<div class=" pull-left">
+								<div class="page-title">All Students List</div>
+							</div>
+							<ol class="breadcrumb page-breadcrumb pull-right">
+								<li><i class="fa fa-home"></i>&nbsp;<a class="parent-item"
+										href="index.html">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
+								</li>
+								<li><a class="parent-item" href="">Professors</a>&nbsp;<i class="fa fa-angle-right"></i>
+								</li>
+								<li class="active">Students List</li>
+							</ol>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+                                <div class="card-head">
+                                    <header>List Of Students By Students</header>
+                                    <form method="POST" class="register-form" id="register-form">
+                                        <div class="form-group">
+                                            <label style="float: center;">Name Of School:</label>
+                                            <select class="form-select" name="current_school" id="current_school" required>
+                                                {% for school in all_schools %}
+                                                    <option value="{{ school.id }}">{{ school.name }} | {{ school.zone }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <th>S/No</th>
+                                                    <th>Name</th>
+                                                    <th>Admission Number</th>
+                                                    <th>School</th>
+                                                    <th>Department</th>
+                                                    <th>Class</th>
+                                                    <th>Gender</th>
+                                                    <th>Age</th>
+                                                </thead>
+                                                <tbody class="table_body">
+                                                
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-7">
+                                            <div>
+                                                <ul class="pagination">
+                                                    {% if teachers.has_previous %}
+                                                    <li class="paginate_button page-item previous" id="example1_previous">
+                                                        <a href="?page={{ teachers.previous_page_number }}" aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                                    </li>
+                                                    {% endif %}
+                                                    <li class="paginate_button page-item active">
+                                                        Page {{ teachers.number }} of {{ teachers.paginator.num_pages }}.
+                                                        <!--<a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">1</a>-->
+                                                    </li>
+                                                    {% if teachers.has_next %}
+                                                    <li class="paginate_button page-item next" id="example1_next">
+                                                        <a href="?page={{ teachers.next_page_number }}" aria-controls="example1" data-dt-idx="2" tabindex="0" class="page-link">Next</a>
+                                                    </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+						</div>
+					</div>
+				</div>
+			</div>
+    <!-- end page content -->
+{% endblock page_content %}
+
+{% block bootstrap_table_js %}
+    <script src="{% static 'js/jquery.datatables.min.js' %}"></script>
+    <script src="{% static 'js/datatables-bootstrap5.min.js' %}"></script>
+    <script src="{% static 'js/tabledata.js' %}"></script>
+{% endblock bootstrap_table_js %}

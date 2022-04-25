@@ -2,11 +2,12 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponseRedirect, HttpResponse
+from django.core.paginator import Paginator
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template.loader import get_template
+from django.template.loader import get_template, render_to_string
 from xhtml2pdf import pisa
-from .models import Zone, School, TeachingSTaff, TeachingSTaffFiles, Subject
+from .models import Zone, School, TeachingSTaff, TeachingSTaffFiles, Subject, Student, StudentFiles
 
 # Create your views here.
 
@@ -213,21 +214,40 @@ def create_teacher_profile(request):
 
 
 def add_files(request):
-    teacher = TeachingSTaff.objects.get(user=request.user)
-    images = request.FILES.getlist('documents')
-    document_title = request.POST.getlist('document_title[]')
-    # print(document_title, type(document_title))
-    file_list = []
-    for image in images:
-        fs = FileSystemStorage()
-        file_path = fs.save(image.name, image)
-        file_list.append(file_path)
+    if request.user.status == 'administrator' or request.user.status == 'staff - teaching':
+        teacher = TeachingSTaff.objects.get(user=request.user)
+        images = request.FILES.getlist('documents')
+        document_title = request.POST.getlist('document_title[]')
+        # print(document_title, type(document_title))
+        file_list = []
+        for image in images:
+            fs = FileSystemStorage()
+            file_path = fs.save(image.name, image)
+            file_list.append(file_path)
 
-    # print(file_list, type(file_list))
-    for key, value in zip(document_title, file_list):
-        teacher_files = TeachingSTaffFiles(user=teacher, document_title=key, documents=value)
-        teacher_files.save()
-    return redirect('/auths/display_teacher_profile/')
+        # print(file_list, type(file_list))
+        for key, value in zip(document_title, file_list):
+            teacher_files = TeachingSTaffFiles(user=teacher, document_title=key, documents=value)
+            teacher_files.save()
+        return redirect('/auths/display_teacher_profile/')
+    elif request.user.status == 'staff - non-teaching':
+        pass
+    elif request.user.status == 'student':
+        student = Student.objects.get(user=request.user)
+        images = request.FILES.getlist('documents')
+        document_title = request.POST.getlist('document_title[]')
+        # print(document_title, type(document_title))
+        file_list = []
+        for image in images:
+            fs = FileSystemStorage()
+            file_path = fs.save(image.name, image)
+            file_list.append(file_path)
+
+        # print(file_list, type(file_list))
+        for key, value in zip(document_title, file_list):
+            student_files = StudentFiles(user=student, document_title=key, documents=value)
+            student_files.save()
+        return redirect('/auths/display_student_profile/')
 
 
 @login_required
@@ -452,12 +472,34 @@ def update_teacher_profile(request):
     return render(request, 'auths/update_teacher_profile.html', context)
 
 
-'''
-# user Profile
+def teaching_staff_list(request):
+    all_schools = School.objects.order_by('zone')
+    '''all_teachers = TeachingSTaff.objects.all().order_by('user')
+    paginator = Paginator(all_teachers, 4)
+    page = request.GET.get('page')
+    teachers = paginator.get_page(page)'''
+    context = {
+        'all_schools': all_schools
+    }
+    return render(request, 'auths/teaching_staff_list.html', context)
+
+
 def user_profile(request, id):
     user = get_object_or_404(User, id=id)
-    return render(request, 'users/user_profile.html', {'user': user})
+    staff = TeachingSTaff.objects.get(user=user)
+    teacher_file = TeachingSTaffFiles.objects.filter(user=staff)
+    context = {
+        'user': user, 'staff': staff, 'teacher_file': teacher_file
+    }
+    return render(request, 'auths/user_profile.html', context)
 
 
-
-'''
+def get_teachers_by_school(request):
+    selected_school_id = request.GET.get('selected_school_id', None)
+    selected_school = School.objects.get(id=selected_school_id)
+    all_teachers = TeachingSTaff.objects.filter(current_posting_school=selected_school)
+    paginator = Paginator(all_teachers, 4)
+    page = request.GET.get('page')
+    teachers = paginator.get_page(page)
+    t = render_to_string('auths/teachers_by_school.html', {'data': teachers})
+    return JsonResponse({'data': t})

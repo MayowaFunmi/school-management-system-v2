@@ -1,0 +1,17 @@
+{% for student in data %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ student.user.first_name }} {{ student.user.last_name }}</td>
+        <td>{{ student.user.file_no }}</td>
+        <td>{{ student.current_school }}</td>
+        <td>{{ student.department }}</td>
+        <td>{{ student.std_class }} {{ student.level }}</td>
+        <td>{{ student.gender }}</td>
+        <td>{{ student.age }}</td>
+        <td>
+            <button id="addRow" class="btn btn-info">
+                <a href="#">View</a>
+            </button>
+        </td>
+    </tr>
+{% endfor %}

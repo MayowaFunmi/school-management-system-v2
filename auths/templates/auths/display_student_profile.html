@@ -3,7 +3,7 @@
 {% extends 'auths/base.html' %}
 {% load static %}
 
-{% block title %}Education | Display Teacher Profile{% endblock title %}
+{% block title %}Education | Student Profile{% endblock title %}
 
 {% block page_content %}
    
@@ -13,16 +13,16 @@
 					<div class="page-bar">
 						<div class="page-title-breadcrumb">
 							<div class=" pull-left">
-								<div class="page-title">Teaching Staff Profile</div>
+								<div class="page-title">Student Profile</div>
 							</div>
 							<ol class="breadcrumb page-breadcrumb pull-right">
 								<li>
                                     <i class="fa fa-home"></i>&nbsp;<a class="parent-item" href="#">Home</a>&nbsp;<i class="fa fa-angle-right"></i>
 								</li>
 								<li>
-                                    <a class="parent-item" href="#">Teacher</a>&nbsp;<i class="fa fa-angle-right"></i>
+                                    <a class="parent-item" href="#">Student</a>&nbsp;<i class="fa fa-angle-right"></i>
 								</li>
-								<li class="active">Teacher Profile</li>
+								<li class="active">Student Profile</li>
 							</ol>
 						</div>
 					</div>
@@ -34,7 +34,8 @@
 									<div class="card-body no-padding height-9">
 										<div class="row">
 											<div class="profile-userpic">
-												<img src="{{ picture.url }}" class="img-responsive" alt=""> </div>
+												<img src="{{ picture.url }}" class="img-responsive" alt="">
+                                            </div>
 										</div>
 										<div class="profile-usertitle">
 											<div class="profile-usertitle-name">{{ first_name }} {{ last_name }} # {{ unique_id }}</div>
@@ -56,7 +57,7 @@
 										<div class="profile-userbuttons">
 											<button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-primary">Follow</button>
 											<button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-pink">Message</button>
-                                            <a href="{% url 'auths:update_teacher_profile' %}">Edit Profile</a>
+                                            <a href="{% url 'auths:update_student_profile' %}">Edit Profile</a>
 										</div>
 										<!-- END SIDEBAR BUTTONS -->
 									</div>
@@ -71,12 +72,8 @@
 										</div>
 										<ul class="list-group list-group-unbordered">
                                             <li class="list-group-item">
-												<b>File Number </b>
-												<div class="profile-desc-item pull-right">{{ file_no }}</div>
-											</li>
-                                            <li class="list-group-item">
-												<b>Grade Level </b>
-												<div class="profile-desc-item pull-right">{{ grade_level }}</div>
+												<b>Admission Number </b>
+												<div class="profile-desc-item pull-right">{{ admission_number }}</div>
 											</li>
 											<li class="list-group-item">
 												<b>Gender </b>
@@ -91,28 +88,20 @@
 												<div class="profile-desc-item pull-right">{{ age }} years</div>
 											</li>
 											<li class="list-group-item">
-												<b>Degree </b>
-												<div class="profile-desc-item pull-right">{{ qualification }}</div>
+												<b>Department </b>
+												<div class="profile-desc-item pull-right">{{ department }}</div>
 											</li>
                                             <li class="list-group-item">
-												<b>Designation</b>
-												<div class="profile-desc-item pull-right">{{ designation }}</div>
+												<b>Class</b>
+												<div class="profile-desc-item pull-right">{{ std_class }} {{ level }}</div>
 											</li>
 											<li class="list-group-item">
-												<b>Discipline</b>
-												<div class="profile-desc-item pull-right">{{ discipline }}</div>
-											</li>
-                                            <li class="list-group-item">
-												<b>Religion</b>
+												<b>Religion </b>
 												<div class="profile-desc-item pull-right">{{ religion }}</div>
 											</li>
                                             <li class="list-group-item">
-												<b>Date Of First Appointment</b>
-												<div class="profile-desc-item pull-right">{{ first_appointment }}</div>
-											</li>
-                                            <li class="list-group-item">
-												<b>Years Of Service</b>
-												<div class="profile-desc-item pull-right">{{ years_in_service }}</div>
+												<b>Year Of Admission </b>
+												<div class="profile-desc-item pull-right">{{ admission_year }}</div>
 											</li>
                                             <li class="list-group-item">
 												<b>Date Registered</b>
@@ -151,26 +140,26 @@
 								</div>
                                 <div class="card">
 									<div class="card-head">
-										<header>Current School Zone</header>
+										<header>Current School </header>
 									</div>
 									<div class="card-body no-padding height-9">
 										<div class="row text-center m-t-10">
 											<div class="col-md-12">
-												<p>{{ current_posting_zone }}</p>
+												<p>{{ current_school }}</p>
 											</div>
 										</div>
 									</div>
 								</div>
 								<div class="card">
 									<div class="card-head">
-										<header>Previous School(s) Posted To: </header>
+										<header>Previous School(s) Attended: </header>
 									</div>
 									<div class="card-body no-padding height-9">
 										<div class="work-monitor work-progress">
-                                            {% if previous_posting_1 %}
+                                            {% if prev_school_1 %}
 											<div class="states">
 												<div class="info">
-													<div class="desc pull-left">{{ previous_posting_1 }}</div>
+													<div class="desc pull-left">{{ prev_school_1 }}</div>
 													<!--<div class="percent pull-right">50%</div>-->
 												</div>
                                                 <!--
@@ -184,10 +173,10 @@
 												-->
 											</div>
                                             {% endif %}
-                                            {% if previous_posting_2 %}
+                                            {% if prev_school_2 %}
                                             <div class="states">
 												<div class="info">
-													<div class="desc pull-left">{{ previous_posting_2 }}</div>
+													<div class="desc pull-left">{{ prev_school_2 }}</div>
 													<!--<div class="percent pull-right">50%</div>-->
 												</div>
                                                 <!--
@@ -201,10 +190,10 @@
 												-->
 											</div>
                                             {% endif %}
-                                            {% if previous_posting_2 %}
+                                            {% if prev_school_3 %}
                                             <div class="states">
 												<div class="info">
-													<div class="desc pull-left">{{ previous_posting_3 }}</div>
+													<div class="desc pull-left">{{ prev_school_3 }}</div>
 													<!--<div class="percent pull-right">50%</div>-->
 												</div>
                                                 <!--
@@ -246,11 +235,11 @@
 														<div class="row">
 															<div class="col-md-3 col-6 b-r"> <strong>Full Name</strong>
 																<br>
-																<p class="text-muted">{{ title }} {{ first_name }} {{ last_name }}</p>
+																<p class="text-muted">{{ first_name }} {{ last_name }}</p>
 															</div>
 															<div class="col-md-3 col-6 b-r"> <strong>Mobile</strong>
 																<br>
-																<p class="text-muted">{{ phone_number }}</p>
+																<p class="text-muted">{{ student_phone_number }}</p>
 															</div>
 															<div class="col-md-3 col-6 b-r"> <strong>Email</strong>
 																<br>
@@ -258,36 +247,33 @@
 															</div>
 															<div class="col-md-3 col-6"> <strong>Current School</strong>
 																<br>
-																<p class="text-muted">{{ current_posting_school }}</p>
+																<p class="text-muted">{{ current_school }}</p>
 															</div>
 														</div>
 														<hr>
 														<p class="m-t-30">{{ about_me }}</p>
 														<br>
               
-														<h4 class="font-bold">Current Subject</h4>
-														<hr>
+														<h4 class="font-bold">Father's Name:</h4>
+                                                        <div class="profile-userpic">
+                                                            <img src="{{ father_img.url }}" class="img-responsive" alt="Father's picture">
+                                                        </div>
 														<ul>
-															<li>{{ current_subject }}</li>
+															<li>{{ father_name }} ({{ father_phone }})</li>
 														</ul>
 														<br>
-														<h4 class="font-bold">Other Subjects Taught</h4>
-														<hr>
+														<h4 class="font-bold">Mother's Name:</h4>
+                                                        <div class="profile-userpic">
+                                                            <img src="{{ mother_img.url }}" class="img-responsive" alt="Mother's picture">
+                                                        </div>
 														<ul>
-															<li>{{ other_subject }}</li>
+															<li>{{ mother_name }} ({{ mother_phone }})</li>
 														</ul>
-														<br>
-														<h4 class="font-bold">Published Work(s)</h4>
-														<hr>
-														<ul>
-															<li><a href="{{ published_work }}" target="_blank">Link to my published work</a></li>
-														</ul>
-														<br>
                                                         
                                                         <h4 class="font-bold">Uploaded Files</h4>
 														<hr>
 														<ol>
-                                                            {% for file in teacher_file %}
+                                                            {% for file in student_files %}
 															<li>{{ file.document_title }}</li> {{ file.documents }}
                                                             {% endfor %}
 														</ol>

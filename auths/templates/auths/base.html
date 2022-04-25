@@ -20,6 +20,8 @@
     <link href="{% static 'css/material-design-icon.css' %}" rel="stylesheet" type="text/css" />
     <!--bootstrap -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+    {% block bootstrap_table_css %}
+    {% endblock bootstrap_table_css %}
     <!-- Material Design Lite CSS -->
     <link rel="stylesheet" href="{% static 'css/material.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/material-style.css' %}">
@@ -424,12 +426,11 @@
                         </li>
                         <li class="nav-item">
                             <a href="#" class="nav-link nav-toggle"> <i data-feather="user"></i>
-                                <span class="title">Professors</span> <span class="arrow"></span>
+                                <span class="title">Teachers</span> <span class="arrow"></span>
                             </a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="all_professors.html" class="nav-link "> <span class="title">All
-                                                Professors</span>
+                                    <a href="{% url 'auths:teaching_staff_list' %}" class="nav-link "> <span class="title">All Teachers</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -1383,6 +1384,8 @@
     <!-- bootstrap -->
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-switch.min.js' %}"></script>
+    {% block bootstrap_table_js %}
+    {% endblock bootstrap_table_js %}
     <!-- counterup -->
     <script src="{% static 'js/jquery-waypoints.min.js' %}"></script>
     <script src="{% static 'js/jquery-counterup.min.js' %}"></script>

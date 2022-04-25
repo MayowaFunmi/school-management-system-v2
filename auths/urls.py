@@ -20,6 +20,11 @@ urlpatterns = [
     path('display_student_profile/', student_views.display_student_profile, name='display_student_profile'),
     path('update_student_profile/', student_views.update_student_profile, name='update_student_profile'),
     path('get_school_by_zone/', ajax_view.get_school_by_zone, name='get_school_by_zone'),
+    path('get_student_by_school/', ajax_view.get_student_by_school, name='get_student_by_school'),
+    path('get_teachers_by_school/', views.get_teachers_by_school, name='get_teachers_by_school'),
     path('render_pdf_view/', views.render_pdf_view, name='render_pdf_view'),
     path('n_render_pdf_view/', n_teaching.render_pdf_view, name='n_render_pdf_view'),
+    path('teaching_staff_list/', views.teaching_staff_list, name='teaching_staff_list'),
+    path('user_profile/<int:id>/', views.user_profile, name='user_profile'),
+    path('students_list/', student_views.students_list, name='students_list'),
 ]

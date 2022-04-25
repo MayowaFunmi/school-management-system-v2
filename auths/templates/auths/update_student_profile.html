@@ -1,0 +1,204 @@
+{% extends 'auths/reg_base.html' %}
+{% load static %}
+
+{% block title %}Education | Students' Profile Form{% endblock title %}
+
+{% block reg_content %}
+    <section class="signup">
+        <div id="form-messages">
+            {% if messages %}
+                {% for message in messages %}
+                    <h3 style="text-align: center; background: red; color: white;">{{ message }}</h3>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="container">
+            <div class="signup-content">
+                <div class="signup-form">
+                    <h2 class="form-title">Update Student's Profile Form</h2>
+                    <form method="POST" class="register-form" id="register-form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="">
+                                <input name="middle_name" type="text" value="{{ student.middle_name }}" class="form-control input-height" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <input name="admission_year" type="text" value="{{ student.admission_year }}" class="form-control input-height" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Name Of School: <strong>{{ student.current_school }}</strong></label>
+                            <label>Change School? </label>
+                            <select class="form-select" name="current_school" required>
+                                <option value="Not Available">Ignore If None</option>
+                                {% for school in all_schools %}
+							        <option value="{{ school.id }}">{{ school.name }} {{ school.address }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Select Your Department: <strong>{{ student.department }}</strong></label>
+                            <label>Change Department? </label>
+                            <select class="form-select" name="department" required>
+                                <option value="Not Available">Ignore If None</option>
+                                {% for dept in all_departments %}
+							        <option value="{{ dept.id }}">{{ dept.department }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Class: <strong>{{ student.std_class }} {{ student.level }}</strong></label>
+                            <label>Change Class? </label>
+                            <select class="form-select" name="std_class" required>
+                                <option value="Not Available">Ignore If None</option>
+                                {% for class in all_classes %}
+							        <option value="{{ class.id }}">{{ class.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Change Level? </label>
+                            <select class="form-select" name="level" required>
+                                <option value="Not Available">Ignore If None</option>
+                                {% for level in all_levels %}
+							        <option value="{{ level.id }}">{{ level.level }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Previous School Attended 1: <strong>{{ student.prev_school_1 }}</strong></label>
+                            <label>Change School?</label>
+                            <select class="form-select" name="prev_school_1" required>
+                                <option value="Not Available">Ignore If None</option>
+                                {% for school in all_schools %}
+                                    <option value="{{ school.id }}">{{ school.name }} | {{ school.zone }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Previous School Attended 2: <strong>{{ student.prev_school_2 }}</strong></label>
+                            <label>Change School?</label>
+                            <select class="form-select" name="prev_school_2" required>
+                                <option value="Not Available">Ignore If None</option>
+                                {% for school in all_schools %}
+                                    <option value="{{ school.id }}">{{ school.name }} | {{ school.zone }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Previous School Attended 3: <strong>{{ student.prev_school_3 }}</strong></label>
+                            <label>Change School?</label>
+                            <select class="form-select" name="prev_school_3" required>
+                                <option value="Not Available">Ignore If None</option>
+                                {% for school in all_schools %}
+                                    <option value="{{ school.id }}">{{ school.name }} | {{ school.zone }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Current Photo:</label>
+                            <img src="{{ student.picture.url }}" style="width: 150px; height: 150px;"><br>
+                            
+                            <label>Change Photo If Necessary:</label>
+                            <div class="">
+                                <input name="picture" id="picture" type="file" class="form-control input-height" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Gender:</label>
+                            <select class="form-select" name="gender" required>
+                                <option value="{{ student.gender }}" selected>{{ student.gender }}</option>
+                                <option value="Male">Male</option>
+							    <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Current Date Of Birth: <strong>{{ student.date_of_birth|date:'d/m/Y' }}</strong></label><br>
+                            <label>Change Date Of Birth If Necessary:</label>
+                            <div class="">
+                                <input name="date_of_birth" id="update_date_of_birth" type="date" class="form-control input-height" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <input name="age" type="text" id="update_age" value="{{ student.age }}" class="form-control input-height" readonly />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <input name="address" type="text" value="{{ student.address }}" class="form-control input-height" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Religion:</label>
+                            <select class="form-select" name="religion" required>
+                                <option value="{{ student.religion }}" selected>{{ student.religion }}</option>
+                                <option value="Christianity">Christianity</option>
+							    <option value="Islam">Islam</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <input name="student_phone_number" id="student_phone_number" type="text" value="{{ student.student_phone_number }}" class="form-control input-height" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <input name="father_name" type="text" value="{{ student.father_name }}" class="form-control input-height" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <input name="father_phone" type="text" value="{{ student.father_phone }}" class="form-control input-height" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Father's Current Photo:</label>
+                            <img src="{{ student.father_img.url }}" style="width: 150px; height: 150px;"><br>
+                            
+                            <label>Change Photo If Necessary:</label>
+                            <div class="">
+                                <input name="father_img" type="file" class="form-control input-height" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="">
+                                <input name="mother_name" type="text" value="{{ student.mother_name }}" class="form-control input-height" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="">
+                                <input name="mother_phone" type="text" value="{{ student.mother_phone }}" class="form-control input-height" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Mother's Current Photo:</label>
+                            <img src="{{ student.mother_img.url }}" style="width: 150px; height: 150px;"><br>
+                            
+                            <label>Change Photo If Necessary:</label>
+                            <div class="">
+                                <input name="mother_img" type="file" class="form-control input-height" />
+                            </div>
+                        </div>
+                        
+                        <div class="form-group form-button">
+                            <button type="submit" class="btn btn-round btn-primary" name="signup" id="register">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="signup-image">
+                    <figure><img src="{% static 'img/signup.jpg' %}" alt="sing up image"></figure><br>
+                    <br><br><br>
+                    <figure><img src="{% static 'img/signup.jpg' %}" alt="sing up image"></figure><br>
+                    <figure><img src="{% static 'img/signup.jpg' %}" alt="sing up image"></figure><br>
+                    <br><br><br>
+                    <figure><img src="{% static 'img/signup.jpg' %}" alt="sing up image"></figure><br>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock reg_content %}

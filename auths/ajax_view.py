@@ -1,6 +1,7 @@
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from .models import School, Zone
+from .models import School, Zone, Student
 
 
 def get_school_by_zone(request):
@@ -11,8 +12,12 @@ def get_school_by_zone(request):
     return JsonResponse({'data': t})
 
 
-'''class GetSchoolByZone(View):
-    def get(self, request):
-        selected_zone = request.GET.get('selected_zone', None)
-        schools = School.objects.filter(zone__name=selected_zone)
-        print(schools)'''
+def get_student_by_school(request):
+    selected_school_id = request.GET.get('selected_school_id', None)
+    selected_school = School.objects.get(id=selected_school_id)
+    all_students = Student.objects.filter(current_school=selected_school)
+    paginator = Paginator(all_students, 4)
+    page = request.GET.get('page')
+    students = paginator.get_page(page)
+    t = render_to_string('auths/students_by_school.html', {'data': students})
+    return JsonResponse({'data': t})

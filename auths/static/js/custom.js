@@ -159,4 +159,36 @@ $(document).ready(function() {
         $('.current_posting_school').show()
     });
 
+    // display students by selected name
+    $('#current_school').focusout(function() {
+        $(".table_body").empty();
+        var selectedSchId = $('#current_school option:selected').val()
+        $.ajax({
+            url: '/auths/get_student_by_school/',
+            data: {
+                'selected_school_id': selectedSchId
+            },
+            dataType: 'json',
+            success: function(students) {
+                $('.table_body').append(students.data)
+            }
+        });
+    });
+
+    // display teachers by selected school
+    $('#school').focusout(function() {
+        $(".teachers_list").empty();
+        var IdSelectedSch = $('#school option:selected').val()
+        $.ajax({
+            url: '/auths/get_teachers_by_school/',
+            data: {
+                'selected_school_id': IdSelectedSch
+            },
+            dataType: 'json',
+            success: function(teachers) {
+                $('.teachers_list').append(teachers.data)
+            }
+        });
+    });
+
 })
