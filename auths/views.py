@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import get_template, render_to_string
 from xhtml2pdf import pisa
-from .models import Zone, School, TeachingSTaff, TeachingSTaffFiles, Subject, Student, StudentFiles
+from .models import Zone, School, TeachingSTaff, TeachingSTaffFiles, Subject, Student, StudentFiles, NonTeachingSTaffFiles
 
 # Create your views here.
 
@@ -503,3 +503,18 @@ def get_teachers_by_school(request):
     teachers = paginator.get_page(page)
     t = render_to_string('auths/teachers_by_school.html', {'data': teachers})
     return JsonResponse({'data': t})
+
+
+def summary_dashboard(request):
+    total_students = Student.objects.all()
+    total_subjects = Subject.objects.all()
+    total_teachers = TeachingSTaff.objects.all()
+    non_teachers = NonTeachingSTaffFiles.objects.all()
+    total_schools = School.objects.all()
+    all_users = User.objects.all()
+
+    context = {
+        'total_students': total_students, 'total_subjects': total_subjects, 'total_teachers': total_teachers,
+        'non_teachers': non_teachers, 'total_schools': total_schools, 'all_users': all_users
+    }
+    return render(request, 'auths/summary_dashboard.html', context)

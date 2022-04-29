@@ -282,8 +282,8 @@ def students_list(request):
 def student_profile(request, id):
     user = get_object_or_404(User, id=id)
     student = Student.objects.get(user=user)
-    student_file = StudentFiles.objects.filter(user=student)
+    student_files = StudentFiles.objects.filter(user=student)
     context = {
-        'user': user, 'student': student, 'student_file': student_file
+        'user': user, 'student': student, 'student_files': student_files
     }
     return render(request, 'auths/student_profile.html', context)

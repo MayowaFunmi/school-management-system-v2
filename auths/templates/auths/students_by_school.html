@@ -10,7 +10,7 @@
         <td>{{ student.age }}</td>
         <td>
             <button id="addRow" class="btn btn-info">
-                <a href="#">View</a>
+                <a href="{% url 'auths:student_profile' student.user.id %}">View</a>
             </button>
         </td>
     </tr>

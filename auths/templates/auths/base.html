@@ -308,20 +308,14 @@
                             <li class="complete">
                                 <div class="theme-color sidebar-theme">
                                     <a href="#" data-theme="white"><span class="head"></span><span class="cont"></span></a>
-                            <a href="#" data-theme="dark"><span class="head"></span><span
-                                            class="cont"></span></a>
-                            <a href="#" data-theme="blue"><span class="head"></span><span
-                                            class="cont"></span></a>
-                            <a href="#" data-theme="indigo"><span class="head"></span><span
-                                            class="cont"></span></a>
-                            <a href="#" data-theme="cyan"><span class="head"></span><span
-                                            class="cont"></span></a>
-                            <a href="#" data-theme="green"><span class="head"></span><span
-                                            class="cont"></span></a>
-                            <a href="#" data-theme="red"><span class="head"></span><span
-                                            class="cont"></span></a>
-                </div>
-                </li>
+                                    <a href="#" data-theme="dark"><span class="head"></span><span class="cont"></span></a>
+                                    <a href="#" data-theme="blue"><span class="head"></span><span class="cont"></span></a>
+                                    <a href="#" data-theme="indigo"><span class="head"></span><span class="cont"></span></a>
+                                    <a href="#" data-theme="cyan"><span class="head"></span><span class="cont"></span></a>
+                                    <a href="#" data-theme="green"><span class="head"></span><span class="cont"></span></a>
+                                    <a href="#" data-theme="red"><span class="head"></span><span class="cont"></span></a>
+                                </div>
+                            </li>
                 <li>
                     <p class="sidebarSettingTitle">Header Brand color</p>
                 </li>
@@ -407,8 +401,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item active">
-                                    <a href="dashboard2.html" class="nav-link ">
-                                        <span class="title">Dashboard 2</span>
+                                    <a href="{% url 'auths:summary_dashboard' %}" class="nav-link ">
+                                        <span class="title">Total Summary</span>
                                         <span class="selected"></span>
                                     </a>
                                 </li>
@@ -459,8 +453,7 @@
                                     <span class="title">Students</span><span class="arrow"></span></a>
                             <ul class="sub-menu">
                                 <li class="nav-item">
-                                    <a href="all_students.html" class="nav-link "> <span class="title">All
-                                                Students</span>
+                                    <a href="{% url 'auths:students_list' %}" class="nav-link "> <span class="title">All Students</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -1402,6 +1395,7 @@
     <script src="{% static 'js/jquery.sparkline.js' %}"></script>
     <script src="{% static 'js/sparkline-data.js' %}"></script>
     <script src="{% static 'js/custom.js' %}"></script>
+    <script src="{% static 'js/stats.js' %}"></script>
     <!-- end js include path -->
 </body>
 
