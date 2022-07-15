@@ -29,4 +29,6 @@ urlpatterns = [
     path('students_list/', student_views.students_list, name='students_list'),
     path('student_profile/<int:id>/', student_views.student_profile, name='student_profile'),
     path('summary_dashboard/', views.summary_dashboard, name='summary_dashboard'),
+    path('get_follow/', views.UserFollow.as_view(), name='get_follow'),
+    path('follow_status/', views.UserFollowStatus.as_view(), name='follow_status'),
 ]

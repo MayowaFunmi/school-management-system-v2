@@ -191,4 +191,64 @@ $(document).ready(function() {
         });
     });
 
+    // get user follow status
+    $('#user_follow').click(function(e) {
+        e.preventDefault()
+        var user_id = $(this).attr('data-id')
+        var data_option = $(this).attr('data-option')
+            //console.log(user_id)
+        $.ajax({
+            url: '/auths/get_follow/',
+            data: {
+                'user_id': user_id,
+                'data_option': data_option
+            },
+            dataType: 'json',
+            success: history.go()
+        });
+    })
+
+    // create and display teacher post
+    $('button#teacher_post').click(function(e) {
+        e.preventDefault()
+        var message = $('textarea#message').val();
+        console.log(message)
+        if (message == null) {
+            alert('Please enter a message/post!!!')
+        } else {
+            $.ajax({
+                url: '/blog/create_post/',
+                data: {
+                    'message': message
+                },
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data)
+                        //$('.teachers_list').append(teachers.data)
+                }
+            });
+        }
+    });
+
+    // user follow button
+    $('#follow_button').click(function(e) {
+        e.preventDefault()
+        var follow_status = $(this).attr('data-value')
+        var user = $("input[name='user']").val()
+        var follower = $("input[name='follower']").val()
+        console.log(follow_status, user, follower)
+        $.ajax({
+            url: '/auths/follow_status/',
+            data: {
+                'follow_status': follow_status,
+                'user': user,
+                'follower': follower
+            },
+            dataType: 'json',
+            success: function(data) {
+                console.log(data)
+            }
+        });
+    })
+
 })

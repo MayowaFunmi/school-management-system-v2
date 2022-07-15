@@ -1,4 +1,4 @@
-<!-- For Personal view -->
+<!-- for other viewers -->
 
 {% extends 'auths/base.html' %}
 {% load static %}
@@ -34,18 +34,18 @@
 									<div class="card-body no-padding height-9">
 										<div class="row">
 											<div class="profile-userpic">
-												<img src="{{ picture.url }}" class="img-responsive" alt=""> </div>
+												<img src="{{ staff.picture.url }}" class="img-responsive" alt=""> </div>
 										</div>
 										<div class="profile-usertitle">
-											<div class="profile-usertitle-name">{{ first_name }} {{ last_name }} # {{ unique_id }}</div>
-											<div class="profile-usertitle-job">{{ status }}</div>
+											<div class="profile-usertitle-name">{{ user.first_name }} {{ user.last_name }} # {{ user.unique_id }}</div>
+											<div class="profile-usertitle-job">{{ user.status }}</div>
 										</div>
 										<ul class="list-group list-group-unbordered">
 											<li class="list-group-item">
-												<b>Followers</b> <a class="pull-right">1,200</a>
+												<b>Followers</b> <a class="pull-right">{{ user_followers }}</a>
 											</li>
 											<li class="list-group-item">
-												<b>Following</b> <a class="pull-right">750</a>
+												<b>Following</b> <a class="pull-right">{{ user_following }}</a>
 											</li>
 											<li class="list-group-item">
 												<b>Friends</b> <a class="pull-right">11,172</a>
@@ -54,9 +54,19 @@
 										<!-- END SIDEBAR USER TITLE -->
 										<!-- SIDEBAR BUTTONS -->
 										<div class="profile-userbuttons">
-											<!--<button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-primary">Follow</button>
-											<button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-pink">Message</button>-->
-                                            <a href="{% url 'auths:update_teacher_profile' %}">Edit Profile</a>
+                                            <form action="/blog/followers_count/" method="post">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="user" value="{{ current_user }}" readonly>
+                                                <input type="hidden" name="follower" value="{{ request.user.username }}" readonly>
+                                                {% if follow_button == 'Follow' %}
+                                                    <input type="hidden" name="value" value="Follow" readonly>
+                                                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-primary">Follow</button>
+                                                {% else %}
+                                                <input type="hidden" name="value" value="Unfollow" readonly>
+                                                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-primary">Unfollow</button>
+                                                {% endif %}
+                                                <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-pink">Message</button>
+                                            </form>
 										</div>
 										<!-- END SIDEBAR BUTTONS -->
 									</div>
@@ -72,51 +82,51 @@
 										<ul class="list-group list-group-unbordered">
                                             <li class="list-group-item">
 												<b>File Number </b>
-												<div class="profile-desc-item pull-right">{{ file_no }}</div>
+												<div class="profile-desc-item pull-right">{{ user.file_no }}</div>
 											</li>
                                             <li class="list-group-item">
 												<b>Grade Level </b>
-												<div class="profile-desc-item pull-right">{{ grade_level }}</div>
+												<div class="profile-desc-item pull-right">{{ staff.grade_level }}</div>
 											</li>
 											<li class="list-group-item">
 												<b>Gender </b>
-												<div class="profile-desc-item pull-right">{{ gender }}</div>
+												<div class="profile-desc-item pull-right">{{ staff.gender }}</div>
 											</li>
 											<li class="list-group-item">
 												<b>Date Of Birth</b>
-												<div class="profile-desc-item pull-right">{{ date_of_birth }}</div>
+												<div class="profile-desc-item pull-right">{{ staff.date_of_birth }}</div>
 											</li>
                                             <li class="list-group-item">
 												<b>Age</b>
-												<div class="profile-desc-item pull-right">{{ age }} years</div>
+												<div class="profile-desc-item pull-right">{{ staff.age }} years</div>
 											</li>
 											<li class="list-group-item">
 												<b>Degree </b>
-												<div class="profile-desc-item pull-right">{{ qualification }}</div>
+												<div class="profile-desc-item pull-right">{{ staff.qualification }}</div>
 											</li>
                                             <li class="list-group-item">
 												<b>Designation</b>
-												<div class="profile-desc-item pull-right">{{ designation }}</div>
+												<div class="profile-desc-item pull-right">{{ staff.designation }}</div>
 											</li>
 											<li class="list-group-item">
 												<b>Discipline</b>
-												<div class="profile-desc-item pull-right">{{ discipline }}</div>
+												<div class="profile-desc-item pull-right">{{ staff.discipline }}</div>
 											</li>
                                             <li class="list-group-item">
 												<b>Religion</b>
-												<div class="profile-desc-item pull-right">{{ religion }}</div>
+												<div class="profile-desc-item pull-right">{{ staff.religion }}</div>
 											</li>
                                             <li class="list-group-item">
 												<b>Date Of First Appointment</b>
-												<div class="profile-desc-item pull-right">{{ first_appointment }}</div>
+												<div class="profile-desc-item pull-right">{{ staff.first_appointment }}</div>
 											</li>
                                             <li class="list-group-item">
 												<b>Years Of Service</b>
-												<div class="profile-desc-item pull-right">{{ years_in_service }}</div>
+												<div class="profile-desc-item pull-right">{{ staff.years_in_service }}</div>
 											</li>
                                             <li class="list-group-item">
 												<b>Date Registered</b>
-												<div class="profile-desc-item pull-right">{{ created_date }}</div>
+												<div class="profile-desc-item pull-right">{{ staff.created_date }}</div>
 											</li>
 										</ul>
                                         <!--
@@ -144,7 +154,7 @@
 									<div class="card-body no-padding height-9">
 										<div class="row text-center m-t-10">
 											<div class="col-md-12">
-												<p>{{ address }}</p>
+												<p>{{ staff.address }}</p>
 											</div>
 										</div>
 									</div>
@@ -156,7 +166,7 @@
 									<div class="card-body no-padding height-9">
 										<div class="row text-center m-t-10">
 											<div class="col-md-12">
-												<p>{{ current_posting_zone }}</p>
+												<p>{{ staff.current_posting_zone }}</p>
 											</div>
 										</div>
 									</div>
@@ -167,10 +177,10 @@
 									</div>
 									<div class="card-body no-padding height-9">
 										<div class="work-monitor work-progress">
-                                            {% if previous_posting_1 %}
+                                            {% if staff.previous_posting_1 %}
 											<div class="states">
 												<div class="info">
-													<div class="desc pull-left">{{ previous_posting_1 }}</div>
+													<div class="desc pull-left">{{ staff.previous_posting_1 }}</div>
 													<!--<div class="percent pull-right">50%</div>-->
 												</div>
                                                 <!--
@@ -184,10 +194,10 @@
 												-->
 											</div>
                                             {% endif %}
-                                            {% if previous_posting_2 %}
+                                            {% if staff.previous_posting_2 %}
                                             <div class="states">
 												<div class="info">
-													<div class="desc pull-left">{{ previous_posting_2 }}</div>
+													<div class="desc pull-left">{{ staff.previous_posting_2 }}</div>
 													<!--<div class="percent pull-right">50%</div>-->
 												</div>
                                                 <!--
@@ -201,10 +211,10 @@
 												-->
 											</div>
                                             {% endif %}
-                                            {% if previous_posting_2 %}
+                                            {% if staff.previous_posting_2 %}
                                             <div class="states">
 												<div class="info">
-													<div class="desc pull-left">{{ previous_posting_3 }}</div>
+													<div class="desc pull-left">{{ staff.previous_posting_3 }}</div>
 													<!--<div class="percent pull-right">50%</div>-->
 												</div>
                                                 <!--
@@ -246,66 +256,52 @@
 														<div class="row">
 															<div class="col-md-3 col-6 b-r"> <strong>Full Name</strong>
 																<br>
-																<p class="text-muted">{{ title }} {{ first_name }} {{ last_name }}</p>
+																<p class="text-muted">{{ user.title }} {{ user.first_name }} {{ user.last_name }}</p>
 															</div>
 															<div class="col-md-3 col-6 b-r"> <strong>Mobile</strong>
 																<br>
-																<p class="text-muted">{{ phone_number }}</p>
+																<p class="text-muted">{{ staff.phone_number }}</p>
 															</div>
 															<div class="col-md-3 col-6 b-r"> <strong>Email</strong>
 																<br>
-																<p class="text-muted">{{ email }}</p>
+																<p class="text-muted">{{ user.email }}</p>
 															</div>
 															<div class="col-md-3 col-6"> <strong>Current School</strong>
 																<br>
-																<p class="text-muted">{{ current_posting_school }}</p>
+																<p class="text-muted">{{ staff.current_posting_school }}</p>
 															</div>
 														</div>
 														<hr>
-														<p class="m-t-30">{{ about_me }}</p>
+														<p class="m-t-30">{{ staff.about_me }}</p>
 														<br>
               
 														<h4 class="font-bold">Current Subject</h4>
 														<hr>
 														<ul>
-															<li>{{ current_subject }}</li>
+															<li>{{ staff.current_subject }}</li>
 														</ul>
 														<br>
 														<h4 class="font-bold">Other Subjects Taught</h4>
 														<hr>
 														<ul>
-															<li>{{ other_subject }}</li>
+															<li>{{ staff.other_subject }}</li>
 														</ul>
 														<br>
 														<h4 class="font-bold">Published Work(s)</h4>
 														<hr>
 														<ul>
-															<li><a href="{{ published_work }}" target="_blank">Link to my published work</a></li>
+															<li><a href="{{ staff.published_work }}" target="_blank">Link to my published work</a></li>
 														</ul>
 														<br>
                                                         
                                                         <h4 class="font-bold">Uploaded Files</h4>
 														<hr>
-														<ol>
+                                                        <ol>
                                                             {% for file in teacher_file %}
 															<li>{{ file.document_title }}</li> {{ file.documents }}
                                                             {% endfor %}
 														</ol>
 														<br>
-                                                        <form method="post" enctype="multipart/form-data" action="/auths/add_files/">
-                                                            {% csrf_token %}
-                                                            <div class="form-group">
-                                                                <label>Upload More Documents</label><br>
-                                                                <div id="images">
-                                        
-                                                                </div>
-                                                                <input id="add_image" class="btn btn-info" type="submit" value="Add Documents">
-                                                            </div>
-                                                            <div class="form-group form-button">
-                                                                <button type="submit" class="btn btn-round btn-primary" name="signup" id="register">Add Files</button>
-                                                            </div>
-                                                        </form>
-              
 													</div>
 												</div>
             
@@ -315,23 +311,30 @@
 														<div class="row">
 															<div class="full-width p-rl-20">
 																<div class="panel">
-																	<form method="post" id="teacher_blog">
-																		<textarea id="message" class="form-control p-text-area" rows="4" placeholder="Whats in your mind today?" required></textarea>
+																	<form>
+																		<textarea class="form-control p-text-area"
+																			rows="4"
+																			placeholder="Whats in your mind today?"></textarea>
 																	</form>
 																	<footer class="panel-footer">
-																		<button class="btn btn-post pull-right" id="teacher_post">Post</button>
+																		<button
+																			class="btn btn-post pull-right">Post</button>
 																		<ul class="nav nav-pills p-option">
 																			<li>
-																				<a href="#"><i class="fa fa-user"></i></a>
+																				<a href="#"><i
+																						class="fa fa-user"></i></a>
 																			</li>
 																			<li>
-																				<a href="#"><i class="fa fa-camera"></i></a>
+																				<a href="#"><i
+																						class="fa fa-camera"></i></a>
 																			</li>
 																			<li>
-																				<a href="#"><i class="fa  fa-location-arrow"></i></a>
+																				<a href="#"><i
+																						class="fa  fa-location-arrow"></i></a>
 																			</li>
 																			<li>
-																				<a href="#"><i class="fa fa-meh-o"></i></a>
+																				<a href="#"><i
+																						class="fa fa-meh-o"></i></a>
 																			</li>
 																		</ul>
 																	</footer>
@@ -341,32 +344,41 @@
 																<ul class="activity-list">
 																	<li>
 																		<div class="avatar">
-																			<img src="../assets/img/user/user1.jpg" alt="" />
+																			<img src="../assets/img/user/user1.jpg"
+																				alt="" />
 																		</div>
 																		<div class="activity-desk">
-																			<h5><a href="#">Rajesh</a> <span>Uploaded 3new photos</span></h5>
-																			<p class="text-muted">7 minutes ago near Alaska, USA</p>
+																			<h5><a href="#">Rajesh</a> <span>Uploaded 3
+																					new photos</span></h5>
+																			<p class="text-muted">7 minutes ago near
+																				Alaska, USA</p>
 																			<div class="album">
 																				<a href="#">
-																					<img alt="" src="../assets/img/mega-img1.jpg">
+																					<img alt=""
+																						src="../assets/img/mega-img1.jpg">
 																				</a>
 																				<a href="#">
-																					<img alt="" src="../assets/img/mega-img2.jpg">
+																					<img alt=""
+																						src="../assets/img/mega-img2.jpg">
 																				</a>
 																				<a href="#">
-																					<img alt="" src="../assets/img/mega-img3.jpg">
+																					<img alt=""
+																						src="../assets/img/mega-img3.jpg">
 																				</a>
 																			</div>
 																		</div>
 																	</li>
 																	<li>
 																		<div class="avatar">
-																			<img src="../assets/img/user/user3.jpg" alt="" />
+																			<img src="../assets/img/user/user3.jpg"
+																				alt="" />
 																		</div>
 																		<div class="activity-desk">
-																			<h5><a href="#">John Doe</a> <span>attended a meeting with</span>
+																			<h5><a href="#">John Doe</a> <span>attended
+																					a meeting with</span>
 																				<a href="#">Lina Smith.</a></h5>
-																			<p class="text-muted">2 days ago near Alaska, USA</p>
+																			<p class="text-muted">2 days ago near
+																				Alaska, USA</p>
 																		</div>
 																	</li>
 																	<li>
@@ -397,7 +409,10 @@
 																		</div>
 																	</li>
 																</ul>
-																<div class="post-box"> <span class="text-muted text-small"><i class="fa fa-clock-o" aria-hidden="true"></i>
+																<div class="post-box"> <span
+																		class="text-muted text-small"><i
+																			class="fa fa-clock-o"
+																			aria-hidden="true"></i>
 																		13 minutes ago</span>
 																	<div class="post-img"><img
 																			src="../assets/img/slider/fullimage1.jpg"

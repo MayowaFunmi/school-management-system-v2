@@ -3,14 +3,14 @@ from django.contrib.auth import get_user_model, authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.core.paginator import Paginator
+from django.db import transaction
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import get_template, render_to_string
+from django.views import View
 from xhtml2pdf import pisa
 from .models import Zone, School, TeachingSTaff, TeachingSTaffFiles, Subject, Student, StudentFiles, NonTeachingSTaffFiles
-
-# Create your views here.
-
+from blog.models import Follow, Stream, Post
 User = get_user_model()
 
 
@@ -484,15 +484,17 @@ def teaching_staff_list(request):
     return render(request, 'auths/teaching_staff_list.html', context)
 
 
-def user_profile(request, id):
+'''def user_profile(request, id):
     user = get_object_or_404(User, id=id)
     staff = TeachingSTaff.objects.get(user=user)
     teacher_file = TeachingSTaffFiles.objects.filter(user=staff)
+    # check follow status
+    follow_status = Follow.objects.filter(following=user, follower=request.user).exists()
     context = {
-        'user': user, 'staff': staff, 'teacher_file': teacher_file
+        'user': user, 'staff': staff, 'teacher_file': teacher_file, 'follow_status': follow_status
     }
     return render(request, 'auths/user_profile.html', context)
-
+'''
 
 def get_teachers_by_school(request):
     selected_school_id = request.GET.get('selected_school_id', None)
@@ -518,3 +520,76 @@ def summary_dashboard(request):
         'non_teachers': non_teachers, 'total_schools': total_schools, 'all_users': all_users
     }
     return render(request, 'auths/summary_dashboard.html', context)
+
+
+class UserFollow(View):
+    def get(self, request):
+        user_id = request.GET.get('user_id', None)
+        data_option = request.GET.get('data_option', None)
+
+        following = User.objects.get(id=int(user_id))
+        try:
+            f, created = Follow.objects.get_or_create(follower=request.user, following=following)
+
+            if int(data_option) == 0:
+                f.delete()
+                Stream.objects.filter(following=following, user=request.user).all().delete()
+            else:
+                posts = Post.objects.all().filter(author=following)[:25]
+
+                with transaction.atomic():
+                    for post in posts:
+                        stream = Stream(post=post, user=request.user, date=post.posted, following=following)
+                        stream.save()
+            return redirect('/auths/user_profile/'+data_option+'/')
+        except User.DoesNotExist:
+            return redirect('/auths/user_profile/'+data_option+'/')
+
+
+def user_profile(request, id):
+    user = get_object_or_404(User, id=id)
+    logged_in_user = request.user.username
+    staff = TeachingSTaff.objects.get(user=user)
+    teacher_file = TeachingSTaffFiles.objects.filter(user=staff)
+    user_followers = len(Follow.objects.filter(user=user))
+    user_following = len(Follow.objects.filter(follower=user))
+
+    # get list of all followers of current user
+    user_follow = Follow.objects.filter(user=user)
+    user_f = []
+    for i in user_follow:
+        user_follow = i.follower
+        user_f.append(user_follow)
+    print(user_f)
+    if logged_in_user in user_f:
+        follow_button = 'Unfollow'
+    else:
+        follow_button = 'Follow'
+    context = {
+        'user': user, 'staff': staff, 'teacher_file': teacher_file, 'user_followers': user_followers,
+        'user_following': user_following, 'follow_button': follow_button, 'id': id
+    }
+    return render(request, 'auths/user_profile.html', context)
+
+
+class UserFollowStatus(View):
+    def get(self, request):
+        follow_status = request.GET.get('follow_status', None)
+        get_user = request.GET.get('user', None)
+        get_follower = request.GET.get('follower', None)
+
+        user = User.objects.get(username=get_user)
+        follower = User.objects.get(username=get_follower)
+
+        data = {}
+
+        if follow_status == 'Follow':
+            followers_cnt = Follow.objects.create(follower=follower, user=user)
+            followers_cnt.save()
+            data['status'] = 'Unfollow'
+            return JsonResponse(data)
+        else:
+            followers_cnt = Follow.objects.get(follower=follower, user=user)
+            followers_cnt.delete()
+            data['status'] = 'Follow'
+            return JsonResponse(data)

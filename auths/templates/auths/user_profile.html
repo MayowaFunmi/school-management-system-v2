@@ -42,10 +42,10 @@
 										</div>
 										<ul class="list-group list-group-unbordered">
 											<li class="list-group-item">
-												<b>Followers</b> <a class="pull-right">1,200</a>
+												<b>Followers</b> <a class="pull-right">{{ user_followers }}</a>
 											</li>
 											<li class="list-group-item">
-												<b>Following</b> <a class="pull-right">750</a>
+												<b>Following</b> <a class="pull-right">{{ user_following }}</a>
 											</li>
 											<li class="list-group-item">
 												<b>Friends</b> <a class="pull-right">11,172</a>
@@ -54,8 +54,17 @@
 										<!-- END SIDEBAR USER TITLE -->
 										<!-- SIDEBAR BUTTONS -->
 										<div class="profile-userbuttons">
-											<button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-primary">Follow</button>
-											<button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-pink">Message</button>
+                                            <input type="hidden" name="user" value="{{ user }}" readonly>
+                                            <input type="hidden" name="follower" value="{{ request.user.username }}" readonly>
+                                            
+                                            {% if follow_button == 'Follow' %}
+                                                <input type="hidden" name="value" value="Follow" readonly>
+                                                <button id="follow_button" type="button" data-value="Follow" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-primary">Follow</button>
+                                            {% else %}
+                                                <input type="hidden" name="value" value="Unfollow" readonly>
+                                                <button id="follow_button" type="button" data-value="Unfollow" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-primary">Unfollow</button>
+                                            {% endif %}
+                                            <button type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect m-b-10 btn-circle btn-pink">Message</button>
 										</div>
 										<!-- END SIDEBAR BUTTONS -->
 									</div>
